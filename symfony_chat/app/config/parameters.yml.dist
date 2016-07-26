@@ -6,7 +6,7 @@ parameters:
     database_port:     ~
     database_name:     symfony
     database_user:     root
-    database_password: ~
+    database_password: root
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
@@ -17,3 +17,5 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+    facebook_app_id: 1580054095632817
+    facebook_app_secret: c17efc63fc0a43d65666f82ab56ca09f
