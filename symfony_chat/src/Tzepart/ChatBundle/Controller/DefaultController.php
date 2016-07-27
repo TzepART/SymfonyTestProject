@@ -4,8 +4,9 @@ namespace Tzepart\ChatBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use HWI\Bundle\OAuthBundle\Controller\ConnectController;
 
-class DefaultController extends Controller
+class DefaultController extends ConnectController
 {
     /**
      * @Route("/")
