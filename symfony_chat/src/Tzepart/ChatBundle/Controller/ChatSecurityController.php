@@ -23,7 +23,7 @@ class ChatSecurityController extends SecurityController
      */
     protected function renderLogin(array $data)
     {
-        return $this->render('security/login.html.twig', $data);
+        return $this->render('TzepartChatBundle:Security:login.html.twig', $data);
     }
 
 }
