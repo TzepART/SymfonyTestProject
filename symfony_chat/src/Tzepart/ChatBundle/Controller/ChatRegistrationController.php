@@ -55,7 +55,7 @@ class ChatRegistrationController extends RegistrationController
             $userManager->updateUser($user);
 
             if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('fos_user_registration_confirmed');
+                $url = $this->generateUrl('tzepart_chat_default_index');
                 $response = new RedirectResponse($url);
             }
 
@@ -69,20 +69,6 @@ class ChatRegistrationController extends RegistrationController
         ));
     }
 
-    /**
-     * Tell the user his account is now confirmed
-     */
-    public function confirmedAction()
-    {
-        $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
-
-        return $this->render('TzepartChatBundle:Default:index.html.twig', array(
-            'user' => $user,
-        ));
-    }
 
 
 }
