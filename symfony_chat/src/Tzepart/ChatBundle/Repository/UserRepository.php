@@ -2,6 +2,10 @@
 
 namespace Tzepart\ChatBundle\Repository;
 
-class UserRepository{
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+
+class UserRepository extends EntityRepository
+{
     
 }
