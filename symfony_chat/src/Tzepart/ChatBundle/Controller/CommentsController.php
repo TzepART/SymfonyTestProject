@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Tzepart\ChatBundle\Entity\Comments;
 use Tzepart\ChatBundle\Form\CommentsType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Comments controller.
@@ -19,7 +21,7 @@ class CommentsController extends Controller
     /**
      * Lists all Comments entities.
      *
-     * @Route("/", name="_index")
+     * @Route("/", name="comment_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -36,7 +38,7 @@ class CommentsController extends Controller
     /**
      * Creates a new Comments entity.
      *
-     * @Route("/new", name="_new")
+     * @Route("/comment/new", name="comment_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -44,13 +46,18 @@ class CommentsController extends Controller
         $comment = new Comments();
         $form = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
+        $user = $this->getCurrentUserObject();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $comment->setUser($user);
+            $comment->setDateCreate(new \DateTime('now'));
+            $comment->setDateUpdate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('_show', array('id' => $comment->getId()));
+            return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
         }
 
         return $this->render('TzepartChatBundle:Comments:new.html.twig', array(
@@ -62,7 +69,7 @@ class CommentsController extends Controller
     /**
      * Finds and displays a Comments entity.
      *
-     * @Route("/{id}", name="_show")
+     * @Route("/comment/{id}", name="comment_show")
      * @Method("GET")
      */
     public function showAction(Comments $comment)
@@ -78,7 +85,7 @@ class CommentsController extends Controller
     /**
      * Displays a form to edit an existing Comments entity.
      *
-     * @Route("/{id}/edit", name="_edit")
+     * @Route("/comment/{id}/edit", name="comment_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Comments $comment)
@@ -86,17 +93,13 @@ class CommentsController extends Controller
         $deleteForm = $this->createDeleteForm($comment);
         $editForm = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $editForm->handleRequest($request);
-        $user = $this->getCurrentUserObject();
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $comment->setUser($user);
-            $comment->setDateCreate(new \DateTime('now'));
-            $comment->setDateUpdate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('_edit', array('id' => $comment->getId()));
+            return $this->redirectToRoute('comment_edit', array('id' => $comment->getId()));
         }
 
         return $this->render('TzepartChatBundle:Comments:edit.html.twig', array(
@@ -109,7 +112,7 @@ class CommentsController extends Controller
     /**
      * Deletes a Comments entity.
      *
-     * @Route("/{id}", name="_delete")
+     * @Route("/comment/{id}", name="comment_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Comments $comment)
@@ -123,7 +126,7 @@ class CommentsController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('_index');
+        return $this->redirectToRoute('comment_index');
     }
 
     /**
@@ -136,10 +139,39 @@ class CommentsController extends Controller
     private function createDeleteForm(Comments $comment)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('_delete', array('id' => $comment->getId())))
+            ->setAction($this->generateUrl('comment_delete', array('id' => $comment->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     *
+     * @Route("/comment/editAjax", name="comment_edit_ajax")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+
+    public function editAjaxAction(Request $request)
+    {
+        if ($request->isXMLHttpRequest()) {
+            $arResult  = [];
+            $commentId = $request->get("commentId");
+            $newText = $request->get("newText");
+            $em    = $this->getDoctrine()->getManager();
+            $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($commentId);
+            $commentObj->setText($newText);
+            $commentObj->setDateUpdate(new \DateTime('now'));
+
+            $em->persist($commentObj);
+            $em->flush();
+            $arResult["status"] = "Y";
+            
+            return new JsonResponse($arResult);
+        }
+
+        return new Response('This is not ajax!', 400);
     }
 
 
