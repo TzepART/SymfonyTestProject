@@ -77,85 +77,26 @@ class CommentsController extends Controller
             'form' => $form->createView(),
         ));
     }
-
-    /**
-     * Finds and displays a Comments entity.
-     *
-     * @Route("/comment/{id}", name="comment_show")
-     * @Method("GET")
-     */
-    public function showAction(Comments $comment)
-    {
-        $deleteForm = $this->createDeleteForm($comment);
-
-        return $this->render('TzepartChatBundle:Comments:show.html.twig', array(
-            'comment' => $comment,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing Comments entity.
-     *
-     * @Route("/comment/{id}/edit", name="comment_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Comments $comment)
-    {
-        $deleteForm = $this->createDeleteForm($comment);
-        $editForm = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
-
-            return $this->redirectToRoute('comment_edit', array('id' => $comment->getId()));
-        }
-
-        return $this->render('TzepartChatBundle:Comments:edit.html.twig', array(
-            'comment' => $comment,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
+    
+    
     /**
      * Deletes a Comments entity.
      *
-     * @Route("/comment/{id}", name="comment_delete")
-     * @Method("DELETE")
+     * @Route("/comment/{id}/delete", name="comment_delete")
      */
-    public function deleteAction(Request $request, Comments $comment)
+    public function deleteAction($id)
     {
-        $form = $this->createDeleteForm($comment);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($comment);
-            $em->flush();
-        }
+        $em    = $this->getDoctrine()->getManager();
+        $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($commentObj);
+        $em->flush();
 
         return $this->redirectToRoute('comment_index');
     }
-
-    /**
-     * Creates a form to delete a Comments entity.
-     *
-     * @param Comments $comment The Comments entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Comments $comment)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('comment_delete', array('id' => $comment->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
+    
 
     /**
      *

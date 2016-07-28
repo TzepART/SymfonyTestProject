@@ -8,7 +8,7 @@
 
     <div class="container">
         <div class="row">
-            <h2 class="register_title">Авторизация</h2>
+            <h2 class="register_title">Authorization</h2>
 
             <form action="{{ path("fos_user_security_check") }}" method="post"
                   class="col-md-4 col-md-offset-4 create_register_form">
@@ -26,11 +26,11 @@
 
                 <div class="form-group">
                     <input type="checkbox" id="remember_me" name="_remember_me" value="on"/>
-                    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                    <label for="remember_me">remember me</label>
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"
+                    <input type="submit" id="_submit" name="_submit" value="Log in"
                            class="btn login-btn btn-primary"/>
                 </div>
             </form>
