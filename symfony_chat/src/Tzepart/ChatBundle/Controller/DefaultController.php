@@ -23,7 +23,6 @@ class DefaultController extends ConnectController
     protected function getCurrentUserObject()
     {
         $user = $this->get('security.context')->getToken()->getUser();
-
         return $user;
     }
 }
