@@ -28,7 +28,7 @@ class CommentsController extends Controller
 
         $comments = $em->getRepository('TzepartChatBundle:Comments')->findAll();
 
-        return $this->render('comments/index.html.twig', array(
+        return $this->render('TzepartChatBundle:Comments:index.html.twig', array(
             'comments' => $comments,
         ));
     }
@@ -53,7 +53,7 @@ class CommentsController extends Controller
             return $this->redirectToRoute('_show', array('id' => $comment->getId()));
         }
 
-        return $this->render('comments/new.html.twig', array(
+        return $this->render('TzepartChatBundle:Comments:new.html.twig', array(
             'comment' => $comment,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class CommentsController extends Controller
     {
         $deleteForm = $this->createDeleteForm($comment);
 
-        return $this->render('comments/show.html.twig', array(
+        return $this->render('TzepartChatBundle:Comments:show.html.twig', array(
             'comment' => $comment,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -86,16 +86,20 @@ class CommentsController extends Controller
         $deleteForm = $this->createDeleteForm($comment);
         $editForm = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $editForm->handleRequest($request);
+        $user = $this->getCurrentUserObject();
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $comment->setUser($user);
+            $comment->setDateCreate(new \DateTime('now'));
+            $comment->setDateUpdate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
 
             return $this->redirectToRoute('_edit', array('id' => $comment->getId()));
         }
 
-        return $this->render('comments/edit.html.twig', array(
+        return $this->render('TzepartChatBundle:Comments:edit.html.twig', array(
             'comment' => $comment,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -136,5 +140,16 @@ class CommentsController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+
+    /**
+     * Get user object
+     * @return integer $userId
+     */
+    protected function getCurrentUserObject()
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        return $user;
     }
 }

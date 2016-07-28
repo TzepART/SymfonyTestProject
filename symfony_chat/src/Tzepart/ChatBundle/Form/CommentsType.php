@@ -16,9 +16,6 @@ class CommentsType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('dateCreate', 'datetime')
-            ->add('dateUpdate', 'datetime')
-            ->add('user')
         ;
     }
     
