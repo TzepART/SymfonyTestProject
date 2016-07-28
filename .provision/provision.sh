@@ -13,6 +13,8 @@ echo "mysql-server mysql-server/root_password_again password root" | debconf-set
  
 sudo apt-get install -y mysql-server mysql-client
 
+mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS symfony"
+
 apt-get install -y language-pack-UTF-8
 apt-get install -y nginx
 rm -rf /etc/nginx/sites-enabled/default
@@ -20,5 +22,15 @@ cp /vagrant/.provision/symfony_project.conf /etc/nginx/sites-available/symfony_p
 ln -s /etc/nginx/sites-available/symfony_project.conf /etc/nginx/sites-enabled/symfony_project.conf
  
 service nginx restart
+
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/bin/composer
+
+/usr/bin/composer global require "fxp/composer-asset-plugin:1.0.0"
+
+echo '{ "github-oauth": { "github.com": "4094b7769e58ae6585afe8d4dcc65fee038c6358"}}' | tee ~/.composer/auth.json
+cp -R ~/.composer/ /home/vagrant/.
+
+(cd /vagrant && /usr/bin/composer install)
  
 
