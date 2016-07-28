@@ -26,12 +26,24 @@ class CommentsController extends Controller
      */
     public function indexAction()
     {
+        $arComments = [];
         $em = $this->getDoctrine()->getManager();
+        $currentUserId = $this->getCurrentUserObject()->getId();
 
         $comments = $em->getRepository('TzepartChatBundle:Comments')->findAll();
 
+        foreach ($comments as $index => $commentObj) {
+            $arComments[$index]["id"] = $commentObj->getId();
+            $arComments[$index]["text"] = $commentObj->getText();
+            if($currentUserId == $commentObj->getUser()->getId()){
+                $arComments[$index]["self"] = true;
+            }else{
+                $arComments[$index]["self"] = false;
+            }
+        }
+
         return $this->render('TzepartChatBundle:Comments:index.html.twig', array(
-            'comments' => $comments,
+            'comments' => $arComments,
         ));
     }
 
@@ -57,7 +69,7 @@ class CommentsController extends Controller
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
+            return $this->redirectToRoute('comment_index');
         }
 
         return $this->render('TzepartChatBundle:Comments:new.html.twig', array(
