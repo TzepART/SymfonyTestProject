@@ -35,12 +35,15 @@ class CommentsController extends Controller
         foreach ($comments as $index => $commentObj) {
             $arComments[$index]["id"] = $commentObj->getId();
             $arComments[$index]["text"] = $commentObj->getText();
+            $arComments[$index]["create"] = $commentObj->getDateCreate()->format('d/m/Y H:i:s');;
             if($currentUserId == $commentObj->getUser()->getId()){
                 $arComments[$index]["self"] = true;
             }else{
                 $arComments[$index]["self"] = false;
             }
         }
+
+        $arComments = array_reverse($arComments);
 
         return $this->render('TzepartChatBundle:Comments:index.html.twig', array(
             'comments' => $arComments,
@@ -59,7 +62,7 @@ class CommentsController extends Controller
         $form = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
         $user = $this->getCurrentUserObject();
-        
+
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
             $comment->setUser($user);
