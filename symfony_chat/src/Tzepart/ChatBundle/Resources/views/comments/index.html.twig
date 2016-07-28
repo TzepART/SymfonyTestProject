@@ -2,7 +2,7 @@
 
 {% block fos_user_content %}
     <div class="row">
-        <div class="jumbotron col-md-6 col-md-offset-3">
+        <div class="jumbotron col-md-6 col-md-offset-1">
             <h2 style="text-align: center">Comments list</h2>
             <div class="list-group">
                 <a href="{{ path('comment_new') }}" class="btn btn-primary btn-lg btn-block">Create comment</a>
@@ -26,7 +26,19 @@
                 </ul>
             </div>
         </div>
+        <div class="jumbotron col-md-4">
+            <h2 style="text-align: center">Friends list</h2>
+            <ul class="list-group">
+                {% for friend in friends %}
+                    <li class="list-group-item">
+                        <span>{{ friend.name }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
     </div>
+
 
     <script>
         function editComment(commentId) {

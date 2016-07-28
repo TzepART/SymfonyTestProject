@@ -10,6 +10,8 @@ use Tzepart\ChatBundle\Entity\Comments;
 use Tzepart\ChatBundle\Form\CommentsType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 /**
  * Comments controller.
@@ -27,10 +29,17 @@ class CommentsController extends Controller
     public function indexAction()
     {
         $arComments = [];
+        $arFriends = [];
         $em = $this->getDoctrine()->getManager();
         $currentUserId = $this->getCurrentUserObject()->getId();
 
         $comments = $em->getRepository('TzepartChatBundle:Comments')->findAll();
+
+
+//        if(!empty($this->container->get('session')->get('user_friends'))){
+        if(!empty($_SESSION['user_friends'])){
+            $arFriends = $_SESSION['user_friends'];
+        }
 
         foreach ($comments as $index => $commentObj) {
             $arComments[$index]["id"] = $commentObj->getId();
@@ -47,6 +56,7 @@ class CommentsController extends Controller
 
         return $this->render('TzepartChatBundle:Comments:index.html.twig', array(
             'comments' => $arComments,
+            'friends' => $arFriends
         ));
     }
 

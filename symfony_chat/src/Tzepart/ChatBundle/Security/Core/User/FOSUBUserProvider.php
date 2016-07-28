@@ -10,9 +10,12 @@ namespace Tzepart\ChatBundle\Security\Core\User;
 
 
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Facebook\FacebookRequest;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class FOSUBUserProvider extends BaseClass
 {
@@ -49,7 +52,11 @@ class FOSUBUserProvider extends BaseClass
         $username = $response->getUsername();
         $user = $this->userManager->findUserBy(array($this->getProperty($response) => $username));
         $attr = $response->getResponse();
-//        $attr["friends"]["data"]
+        if(!empty($attr["friends"]["data"])){
+//            $request = new Request();
+//            $request->getSession()->set('user_friends',$attr["friends"]["data"]);
+            $_SESSION['user_friends'] = $attr["friends"]["data"];
+        }
 
 
         //when the user is registrating
