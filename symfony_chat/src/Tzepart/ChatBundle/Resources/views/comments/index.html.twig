@@ -1,43 +1,48 @@
-{% extends 'base.html.twig' %}
+{% extends 'TzepartChatBundle::layout.html.twig' %}
 
-{% block body %}
-    <h1>Comments list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Text</th>
-                <th>Datecreate</th>
-                <th>Dateupdate</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for comment in comments %}
-            <tr>
-                <td><a href="{{ path('_show', { 'id': comment.id }) }}">{{ comment.id }}</a></td>
-                <td>{{ comment.text }}</td>
-                <td>{% if comment.dateCreate %}{{ comment.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if comment.dateUpdate %}{{ comment.dateUpdate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('_show', { 'id': comment.id }) }}">show</a>
+{% block fos_user_content %}
+    <div class="row">
+        <div class="jumbotron col-md-6 col-md-offset-3">
+            <h2 style="text-align: center">Comments list</h2>
+            <div class="list-group">
+                <a href="{{ path('comment_new') }}" class="btn btn-primary btn-lg btn-block">Create comment</a>
+                <ul class="list-group">
+                    {% for comment in comments %}
+                        <li style="background-color: #5cb85c" class="list-group-item">
+                            <textarea class="well" style="width: 100%" name="text" id="commentText_{{ comment.id }}" rows="2">{{ comment.text }}</textarea>
+                            {{ comment.create }}
+                            {% if (comment.self) %}
+                                <span style="float: right">
+                                    <a href="#" onclick="return editComment({{ comment.id }});">
+                                        <i class="fa fa-save fa-lg"></i>
+                                    </a>
+                                    <a href="{{ path('comment_delete', { 'id': comment.id }) }}">
+                                        <i class="fa fa-times fa-lg"></i>
+                                    </a>
+                                </span>
+                            {% endif %}
                         </li>
-                        <li>
-                            <a href="{{ path('_edit', { 'id': comment.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+    <script>
+        function editComment(commentId) {
+            var newText = $('#commentText_' + commentId).val();
+            $.post(
+                    "{{ path('comment_edit_ajax') }}",
+                    {
+                        commentId: commentId,
+                        newText: newText
+                    },
+                    function (data) {
+                        $('#commentText' + commentId).attr("value", newText)
+                    }
+            );
+
+        }
+
+    </script>
 {% endblock %}

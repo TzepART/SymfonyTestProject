@@ -54,7 +54,7 @@ class ChatProfileController extends ProfileController
             $userManager->updateUser($user);
 
             if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('tzepart_chat_default_index');
+                $url = $this->generateUrl('comment_index');
                 $response = new RedirectResponse($url);
             }
 
