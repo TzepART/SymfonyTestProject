@@ -59,11 +59,11 @@ class CommentsController extends Controller
         $form = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
         $user = $this->getCurrentUserObject();
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        
+        if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
             $comment->setUser($user);
+            $comment->setText($request->get("commentText"));
             $comment->setDateCreate(new \DateTime('now'));
             $comment->setDateUpdate(new \DateTime('now'));
             $em->persist($comment);
