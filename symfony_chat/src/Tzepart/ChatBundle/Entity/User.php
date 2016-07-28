@@ -35,6 +35,24 @@ class User extends BaseUser
 
     /** @ORM\Column(name="last_name", type="string", length=255, nullable=true) */
     protected $last_name;
+    
+    protected $friend_list;
+
+    /**
+     * @return mixed
+     */
+    public function getFriendList()
+    {
+        return $this->friend_list;
+    }
+
+    /**
+     * @param mixed $friend_list
+     */
+    public function setFriendList($friend_list)
+    {
+        $this->friend_list = $friend_list;
+    }
 
     /**
      * @return mixed

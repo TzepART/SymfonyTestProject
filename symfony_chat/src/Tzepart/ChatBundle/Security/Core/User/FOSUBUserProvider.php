@@ -12,6 +12,7 @@ namespace Tzepart\ChatBundle\Security\Core\User;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Facebook\FacebookRequest;
 
 class FOSUBUserProvider extends BaseClass
 {
@@ -44,8 +45,13 @@ class FOSUBUserProvider extends BaseClass
      */
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
+
         $username = $response->getUsername();
         $user = $this->userManager->findUserBy(array($this->getProperty($response) => $username));
+        $attr = $response->getResponse();
+//        $attr["friends"]["data"]
+
+
         //when the user is registrating
         if (null === $user) {
             $service = $response->getResourceOwner()->getName();
@@ -58,7 +64,7 @@ class FOSUBUserProvider extends BaseClass
             $user->$setter_token($response->getAccessToken());
             //I have set all requested data with the user's username
             //modify here with relevant data
-            $user->setUsername($username);
+            $user->setUsername($attr["name"]);
             $user->setEmail($username);
             $user->setPassword($username);
             $user->setEnabled(true);
@@ -67,6 +73,7 @@ class FOSUBUserProvider extends BaseClass
         }
         //if user exists - go with the HWIOAuth way
         $user = parent::loadUserByOAuthUserResponse($response);
+
         $serviceName = $response->getResourceOwner()->getName();
         $setter = 'set' . ucfirst($serviceName) . 'AccessToken';
         //update access token

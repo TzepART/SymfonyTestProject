@@ -15,4 +15,15 @@ class DefaultController extends ConnectController
     {
         return $this->render('TzepartChatBundle:Default:index.html.twig');
     }
+
+    /**
+     * Get user object
+     * @return integer $userId
+     */
+    protected function getCurrentUserObject()
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        return $user;
+    }
 }
