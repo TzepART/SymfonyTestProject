@@ -7,30 +7,44 @@
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
     </head>
     <body>
-        <div>
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                <a href="{{ path('fos_user_security_logout') }}">
-                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                </a>
-            {% else %}
-                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ path('fos_user_profile_edit') }}">Change profile</a></li>
+                    <li>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <a href="{{ path('fos_user_security_logout') }}">
+                                Log Out
+                            </a>
+                        {% else %}
+                            <a href="{{ path('fos_user_security_login') }}">Log In</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            {% if app.request.hasPreviousSession %}
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        <div class="flash-{{ type }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
             {% endif %}
         </div>
 
-        {% if app.request.hasPreviousSession %}
-            {% for type, messages in app.session.flashbag.all() %}
-                {% for message in messages %}
-                    <div class="flash-{{ type }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
 
-        <div>
-            {% block fos_user_content %}
-            {% endblock fos_user_content %}
-        </div>
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+
+    </div>
     </body>
 </html>
