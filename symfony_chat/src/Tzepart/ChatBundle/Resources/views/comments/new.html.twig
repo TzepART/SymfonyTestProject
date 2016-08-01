@@ -2,17 +2,12 @@
 
 {% block fos_user_content %}
     <div class="row">
-
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-
         <div class="jumbotron col-md-6 col-md-offset-3 create_note_form">
 
             <h2 style="text-align: center">Comments creation</h2>
 
-            <div class="form-group">
-                <textarea placeholder="Text" name="commentText" class="form-control" rows="3"></textarea>
-            </div>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
 
             <div class="form-group form_submit">
                 <input name="save" value="Save comment" class="btn btn-success btn-block" type="submit">

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Tzepart\ChatBundle\Entity\Comments;
+use Tzepart\ChatBundle\Entity\CommentsManager;
 use Tzepart\ChatBundle\Form\CommentsType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,31 +31,17 @@ class CommentsController extends Controller
      */
     public function indexAction()
     {
-        $arComments    = [];
-        $arFriends     = [];
-        $em            = $this->getDoctrine()->getManager();
-        $currentUserId = $this->getCurrentUserObject()->getId();
+        $arComments = [];
+        $arFriends  = [];
 
-        $comments = $em->getRepository('TzepartChatBundle:Comments')->findAll();
-
-
-//        if(!empty($this->container->get('session')->get('user_friends'))){
         if (!empty($_SESSION['user_friends'])) {
             $arFriends = $_SESSION['user_friends'];
         }
 
-        foreach ($comments as $index => $commentObj) {
-            $arComments[$index]["id"]     = $commentObj->getId();
-            $arComments[$index]["text"]   = $commentObj->getText();
-            $arComments[$index]["create"] = $commentObj->getDateCreate()->format('d/m/Y H:i:s');;
-            if ($currentUserId == $commentObj->getUser()->getId()) {
-                $arComments[$index]["self"] = true;
-            } else {
-                $arComments[$index]["self"] = false;
-            }
-        }
+        $em                 = $this->getDoctrine()->getManager();
+        $commentsManagerObj = new CommentsManager($em, 'TzepartChatBundle:Comments');
 
-        $arComments = array_reverse($arComments);
+        $arComments = array_reverse($commentsManagerObj->allComments());
 
         return [
             'comments' => $arComments,
@@ -72,7 +59,7 @@ class CommentsController extends Controller
     public function newAction(Request $request)
     {
         $comment = new Comments();
-        $user = $this->getCurrentUserObject();
+        $user    = $this->getCurrentUserObject();
         $form    = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
 
