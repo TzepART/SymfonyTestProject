@@ -52,6 +52,13 @@ class Comments
      * })
      */
     private $user;
+
+    private $date;
+
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
     
 
     /**

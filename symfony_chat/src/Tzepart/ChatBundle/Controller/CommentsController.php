@@ -72,16 +72,13 @@ class CommentsController extends Controller
     public function newAction(Request $request)
     {
         $comment = new Comments();
+        $user = $this->getCurrentUserObject();
         $form    = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
-        $user = $this->getCurrentUserObject();
 
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
             $comment->setUser($user);
-            $comment->setText($request->get("commentText"));
-            $comment->setDateCreate(new \DateTime('now'));
-            $comment->setDateUpdate(new \DateTime('now'));
             $em->persist($comment);
             $em->flush();
 
@@ -102,11 +99,9 @@ class CommentsController extends Controller
      */
     public function deleteAction($id)
     {
-
         $em         = $this->getDoctrine()->getManager();
         $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($id);
 
-        $em = $this->getDoctrine()->getManager();
         $em->remove($commentObj);
         $em->flush();
 
