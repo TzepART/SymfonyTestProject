@@ -19,20 +19,21 @@ class CommentsManager
 
     public function __construct(EntityManager $em, $class)
     {
-        $this->em = $em;
+        $this->em         = $em;
         $this->repository = $em->getRepository($class);
     }
 
     function allComments()
     {
         $arComments = [];
-        $comments = $this->repository->findAll();
+        $comments   = $this->repository->findAll();
         foreach ($comments as $index => $commentObj) {
             $arComments[$index]["id"]     = $commentObj->getId();
+            $arComments[$index]["userId"] = $commentObj->getUser()->getId();
             $arComments[$index]["text"]   = $commentObj->getText();
             $arComments[$index]["create"] = $commentObj->getDateCreate()->format('d/m/Y H:i:s');;
         }
-        
+
         return $arComments;
     }
 
