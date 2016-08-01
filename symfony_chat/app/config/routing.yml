@@ -5,7 +5,7 @@ tzepart_chat:
 
 #FosUserBundle Routes
 fos_user_security:
-    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    resource: "@TzepartChatBundle/Resources/config/routing/security.xml"
 
 fos_user_profile:
     resource: "@TzepartChatBundle/Resources/config/routing/profile.xml"
