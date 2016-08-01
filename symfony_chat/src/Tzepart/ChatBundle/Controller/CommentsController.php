@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Tzepart\ChatBundle\Entity\Comments;
 use Tzepart\ChatBundle\Entity\CommentsManager;
-use Tzepart\ChatBundle\Form\CommentsType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -31,7 +30,6 @@ class CommentsController extends Controller
      */
     public function indexAction()
     {
-        $arComments = [];
         $arFriends  = [];
 
         if (!empty($_SESSION['user_friends'])) {
@@ -133,7 +131,6 @@ class CommentsController extends Controller
     protected function getCurrentUserObject()
     {
         $user = $this->getUser();
-
         return $user;
     }
 }
