@@ -67,6 +67,7 @@ class CommentsController extends Controller
      *
      * @Route("/comment/new", name="comment_new")
      * @Method({"GET", "POST"})
+     * @Template
      */
     public function newAction(Request $request)
     {
@@ -87,13 +88,10 @@ class CommentsController extends Controller
             return $this->redirectToRoute('comment_index');
         }
 
-        return $this->render(
-            'TzepartChatBundle:Comments:new.html.twig',
-            array(
-                'comment' => $comment,
-                'form' => $form->createView(),
-            )
-        );
+        return [
+            'comment' => $comment,
+            'form' => $form->createView(),
+        ];
     }
 
 
@@ -139,7 +137,7 @@ class CommentsController extends Controller
             $em->flush();
             $arResult["status"] = "OK";
 
-            return new JsonResponse($arResult,201);
+            return new JsonResponse($arResult, 201);
         }
 
         return new Response('This is not ajax!', 400);
@@ -153,6 +151,7 @@ class CommentsController extends Controller
     protected function getCurrentUserObject()
     {
         $user = $this->getUser();
+
         return $user;
     }
 }
