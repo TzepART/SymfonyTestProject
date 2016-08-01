@@ -11,13 +11,13 @@ namespace Tzepart\ChatBundle\Security\Core\User;
 
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
+use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseFOSUBUserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Facebook\FacebookRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class FOSUBUserProvider extends BaseClass
+class FOSUBUserProvider extends BaseFOSUBUserProvider
 {
 
     /**

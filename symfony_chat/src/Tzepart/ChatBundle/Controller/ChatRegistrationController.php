@@ -64,7 +64,7 @@ class ChatRegistrationController extends RegistrationController
             return $response;
         }
 
-        return $this->render('TzepartChatBundle:Registration:register.html.twig', array(
+        return $this->render('registration/register.html.twig', array(
             'form' => $form->createView(),
         ));
     }

@@ -63,7 +63,7 @@ class ChatProfileController extends ProfileController
             return $response;
         }
 
-        return $this->render('TzepartChatBundle:Profile:edit.html.twig', array(
+        return $this->render('profile/edit.html.twig', array(
             'form' => $form->createView()
         ));
     }
