@@ -11,6 +11,7 @@ use Tzepart\ChatBundle\Form\CommentsType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
 /**
@@ -25,39 +26,40 @@ class CommentsController extends Controller
      *
      * @Route("/", name="comment_index")
      * @Method("GET")
+     * @Template
      */
     public function indexAction()
     {
-        $arComments = [];
-        $arFriends = [];
-        $em = $this->getDoctrine()->getManager();
+        $arComments    = [];
+        $arFriends     = [];
+        $em            = $this->getDoctrine()->getManager();
         $currentUserId = $this->getCurrentUserObject()->getId();
 
         $comments = $em->getRepository('TzepartChatBundle:Comments')->findAll();
 
 
 //        if(!empty($this->container->get('session')->get('user_friends'))){
-        if(!empty($_SESSION['user_friends'])){
+        if (!empty($_SESSION['user_friends'])) {
             $arFriends = $_SESSION['user_friends'];
         }
 
         foreach ($comments as $index => $commentObj) {
-            $arComments[$index]["id"] = $commentObj->getId();
-            $arComments[$index]["text"] = $commentObj->getText();
+            $arComments[$index]["id"]     = $commentObj->getId();
+            $arComments[$index]["text"]   = $commentObj->getText();
             $arComments[$index]["create"] = $commentObj->getDateCreate()->format('d/m/Y H:i:s');;
-            if($currentUserId == $commentObj->getUser()->getId()){
+            if ($currentUserId == $commentObj->getUser()->getId()) {
                 $arComments[$index]["self"] = true;
-            }else{
+            } else {
                 $arComments[$index]["self"] = false;
             }
         }
 
         $arComments = array_reverse($arComments);
 
-        return $this->render('TzepartChatBundle:Comments:index.html.twig', array(
+        return [
             'comments' => $arComments,
-            'friends' => $arFriends
-        ));
+            'friends' => $arFriends,
+        ];
     }
 
     /**
@@ -69,7 +71,7 @@ class CommentsController extends Controller
     public function newAction(Request $request)
     {
         $comment = new Comments();
-        $form = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
+        $form    = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
         $user = $this->getCurrentUserObject();
 
@@ -85,13 +87,16 @@ class CommentsController extends Controller
             return $this->redirectToRoute('comment_index');
         }
 
-        return $this->render('TzepartChatBundle:Comments:new.html.twig', array(
-            'comment' => $comment,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'TzepartChatBundle:Comments:new.html.twig',
+            array(
+                'comment' => $comment,
+                'form' => $form->createView(),
+            )
+        );
     }
-    
-    
+
+
     /**
      * Deletes a Comments entity.
      *
@@ -100,7 +105,7 @@ class CommentsController extends Controller
     public function deleteAction($id)
     {
 
-        $em    = $this->getDoctrine()->getManager();
+        $em         = $this->getDoctrine()->getManager();
         $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($id);
 
         $em = $this->getDoctrine()->getManager();
@@ -109,7 +114,7 @@ class CommentsController extends Controller
 
         return $this->redirectToRoute('comment_index');
     }
-    
+
 
     /**
      *
@@ -122,19 +127,19 @@ class CommentsController extends Controller
     public function editAjaxAction(Request $request)
     {
         if ($request->isXMLHttpRequest()) {
-            $arResult  = [];
-            $commentId = $request->get("commentId");
-            $newText = $request->get("newText");
-            $em    = $this->getDoctrine()->getManager();
+            $arResult   = [];
+            $commentId  = $request->get("commentId");
+            $newText    = $request->get("newText");
+            $em         = $this->getDoctrine()->getManager();
             $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($commentId);
             $commentObj->setText($newText);
             $commentObj->setDateUpdate(new \DateTime('now'));
 
             $em->persist($commentObj);
             $em->flush();
-            $arResult["status"] = "Y";
-            
-            return new JsonResponse($arResult);
+            $arResult["status"] = "OK";
+
+            return new JsonResponse($arResult,201);
         }
 
         return new Response('This is not ajax!', 400);
@@ -147,7 +152,7 @@ class CommentsController extends Controller
      */
     protected function getCurrentUserObject()
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         return $user;
     }
 }
