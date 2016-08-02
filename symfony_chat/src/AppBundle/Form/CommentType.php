@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class CommentsType extends AbstractType
+class CommentType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -29,7 +29,7 @@ class CommentsType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'AppBundle\Entity\Comments',
+                'data_class' => 'AppBundle\Entity\Comment',
             )
         );
     }

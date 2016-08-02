@@ -11,7 +11,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\EntityManager;
 
 
-class CommentsManager
+class CommentManager
 {
 
     protected $em;

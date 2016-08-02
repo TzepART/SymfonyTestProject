@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
- * Comments
+ * Comment
  *
  * @ORM\Table(name="comments", indexes={@ORM\Index(name="fk_comments_lcl_user_idx", columns={"users_id"})})
  * @ORM\Entity
  */
-class Comments
+class Comment
 {
     /**
      * @ORM\Column(type="integer")
@@ -76,7 +76,7 @@ class Comments
      * Set text
      *
      * @param string $text
-     * @return Comments
+     * @return Comment
      */
     public function setText($text)
     {
@@ -99,7 +99,7 @@ class Comments
      * Set dateCreate
      *
      * @param \DateTime $dateCreate
-     * @return Comments
+     * @return Comment
      */
     public function setDateCreate($dateCreate)
     {
@@ -122,7 +122,7 @@ class Comments
      * Set dateUpdate
      *
      * @param \DateTime $dateUpdate
-     * @return Comments
+     * @return Comment
      */
     public function setDateUpdate($dateUpdate)
     {
@@ -145,7 +145,7 @@ class Comments
      * Set user
      *
      * @param \AppBundle\Entity\User $user
-     * @return Comments
+     * @return Comment
      */
     public function setUser(\AppBundle\Entity\User $user = null)
     {

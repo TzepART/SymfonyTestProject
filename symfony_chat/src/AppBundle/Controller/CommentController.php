@@ -6,22 +6,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Comments;
-use AppBundle\Entity\CommentsManager;
+use AppBundle\Entity\Comment;
+use AppBundle\Entity\CommentManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
 /**
- * Comments controller.
+ * Comment controller.
  *
  * @Route("/")
  */
-class CommentsController extends Controller
+class CommentController extends Controller
 {
     /**
-     * Lists all Comments entities.
+     * Lists all Comment entities.
      *
      * @Route("/", name="comment_index")
      * @Method("GET")
@@ -36,7 +36,7 @@ class CommentsController extends Controller
         }
 
         $em                 = $this->getDoctrine()->getManager();
-        $commentsManagerObj = new CommentsManager($em, 'AppBundle:Comments');
+        $commentsManagerObj = new CommentManager($em, 'AppBundle:Comment');
 
         $arComments = array_reverse($commentsManagerObj->allComments());
 
@@ -47,7 +47,7 @@ class CommentsController extends Controller
     }
 
     /**
-     * Creates a new Comments entity.
+     * Creates a new Comment entity.
      *
      * @Route("/comment/new", name="comment_new")
      * @Method({"GET", "POST"})
@@ -55,9 +55,9 @@ class CommentsController extends Controller
      */
     public function newAction(Request $request)
     {
-        $comment = new Comments();
+        $comment = new Comment();
         $user    = $this->getCurrentUserObject();
-        $form    = $this->createForm('AppBundle\Form\CommentsType', $comment);
+        $form    = $this->createForm('AppBundle\Form\CommentType', $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -77,14 +77,14 @@ class CommentsController extends Controller
 
 
     /**
-     * Deletes a Comments entity.
+     * Deletes a Comment entity.
      *
      * @Route("/comment/{id}/delete", name="comment_delete")
      */
     public function deleteAction($id)
     {
         $em         = $this->getDoctrine()->getManager();
-        $commentObj = $em->getRepository('AppBundle:Comments')->find($id);
+        $commentObj = $em->getRepository('AppBundle:Comment')->find($id);
 
         $em->remove($commentObj);
         $em->flush();
@@ -108,7 +108,7 @@ class CommentsController extends Controller
             $commentId  = $request->get("commentId");
             $newText    = $request->get("newText");
             $em         = $this->getDoctrine()->getManager();
-            $commentObj = $em->getRepository('AppBundle:Comments')->find($commentId);
+            $commentObj = $em->getRepository('AppBundle:Comment')->find($commentId);
             $commentObj->setText($newText);
             $commentObj->setDateUpdate(new \DateTime('now'));
 
