@@ -28,9 +28,9 @@ class FOSUBUserProvider extends BaseFOSUBUserProvider
         $property = $this->getProperty($response);
         $username = $response->getUsername();
         //on connect - get the access token and the user ID
-        $service = $response->getResourceOwner()->getName();
-        $setter = 'set'.ucfirst($service);
-        $setter_id = $setter.'Id';
+        $service      = $response->getResourceOwner()->getName();
+        $setter       = 'set'.ucfirst($service);
+        $setter_id    = $setter.'Id';
         $setter_token = $setter.'AccessToken';
         //we "disconnect" previously connected users
         if (null !== $previousUser = $this->userManager->findUserBy(array($property => $username))) {
@@ -43,6 +43,7 @@ class FOSUBUserProvider extends BaseFOSUBUserProvider
         $user->$setter_token($response->getAccessToken());
         $this->userManager->updateUser($user);
     }
+
     /**
      * {@inheritdoc}
      */
@@ -50,9 +51,9 @@ class FOSUBUserProvider extends BaseFOSUBUserProvider
     {
 
         $username = $response->getUsername();
-        $user = $this->userManager->findUserBy(array($this->getProperty($response) => $username));
-        $attr = $response->getResponse();
-        if(!empty($attr["friends"]["data"])){
+        $user     = $this->userManager->findUserBy(array($this->getProperty($response) => $username));
+        $attr     = $response->getResponse();
+        if (!empty($attr["friends"]["data"])) {
 //            $request = new Request();
 //            $request->getSession()->set('user_friends',$attr["friends"]["data"]);
             $_SESSION['user_friends'] = $attr["friends"]["data"];
@@ -61,9 +62,9 @@ class FOSUBUserProvider extends BaseFOSUBUserProvider
 
         //when the user is registrating
         if (null === $user) {
-            $service = $response->getResourceOwner()->getName();
-            $setter = 'set'.ucfirst($service);
-            $setter_id = $setter.'Id';
+            $service      = $response->getResourceOwner()->getName();
+            $setter       = 'set'.ucfirst($service);
+            $setter_id    = $setter.'Id';
             $setter_token = $setter.'AccessToken';
             // create new user here
             $user = $this->userManager->createUser();
@@ -76,15 +77,17 @@ class FOSUBUserProvider extends BaseFOSUBUserProvider
             $user->setPassword($username);
             $user->setEnabled(true);
             $this->userManager->updateUser($user);
+
             return $user;
         }
         //if user exists - go with the HWIOAuth way
         $user = parent::loadUserByOAuthUserResponse($response);
 
         $serviceName = $response->getResourceOwner()->getName();
-        $setter = 'set' . ucfirst($serviceName) . 'AccessToken';
+        $setter      = 'set'.ucfirst($serviceName).'AccessToken';
         //update access token
         $user->$setter($response->getAccessToken());
+
         return $user;
     }
 

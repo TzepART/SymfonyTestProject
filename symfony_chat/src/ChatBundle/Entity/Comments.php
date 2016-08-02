@@ -20,7 +20,7 @@ class Comments
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
 
     /**
      * @var string
@@ -59,18 +59,18 @@ class Comments
     {
         $this->date = new \DateTime();
     }
-    
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
 
     /**
      * Set text
@@ -88,7 +88,7 @@ class Comments
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -111,7 +111,7 @@ class Comments
     /**
      * Get dateCreate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateCreate()
     {
@@ -134,7 +134,7 @@ class Comments
     /**
      * Get dateUpdate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateUpdate()
     {
@@ -157,11 +157,11 @@ class Comments
     /**
      * Get user
      *
-     * @return \ChatBundle\Entity\User 
+     * @return \ChatBundle\Entity\User
      */
     public function getUser()
     {
         return $this->user;
     }
-    
+
 }

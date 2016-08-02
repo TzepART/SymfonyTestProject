@@ -31,11 +31,11 @@ class User extends BaseUser
 
     /** @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true) */
     protected $facebook_access_token;
-    
+
 
     /** @ORM\Column(name="last_name", type="string", length=255, nullable=true) */
     protected $last_name;
-    
+
     protected $friend_list;
 
     /**
@@ -61,7 +61,7 @@ class User extends BaseUser
     {
         return $this->id;
     }
-    
+
     /**
      * @return mixed
      */

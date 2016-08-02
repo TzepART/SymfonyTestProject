@@ -9,7 +9,8 @@
                 <ul class="list-group">
                     {% for comment in comments %}
                         <li style="background-color: #5cb85c" class="list-group-item">
-                            <textarea class="well" style="width: 100%" name="text" id="commentText_{{ comment.id }}" rows="2">{{ comment.text }}</textarea>
+                            <textarea class="well" style="width: 100%" name="text" id="commentText_{{ comment.id }}"
+                                      rows="2">{{ comment.text }}</textarea>
                             {{ comment.create }}
                             {% if (comment.userId == app.user.id) %}
                                 <span style="float: right">

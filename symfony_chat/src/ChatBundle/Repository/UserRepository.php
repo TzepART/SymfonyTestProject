@@ -7,5 +7,5 @@ use Doctrine\ORM\Query;
 
 class UserRepository extends EntityRepository
 {
-    
+
 }

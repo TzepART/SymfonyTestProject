@@ -29,7 +29,7 @@ class CommentsController extends Controller
      */
     public function indexAction()
     {
-        $arFriends  = [];
+        $arFriends = [];
 
         if (!empty($_SESSION['user_friends'])) {
             $arFriends = $_SESSION['user_friends'];
@@ -130,6 +130,7 @@ class CommentsController extends Controller
     protected function getCurrentUserObject()
     {
         $user = $this->getUser();
+
         return $user;
     }
 }
