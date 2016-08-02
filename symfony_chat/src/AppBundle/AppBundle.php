@@ -1,9 +1,9 @@
 <?php
 
-namespace ChatBundle;
+namespace AppBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ChatBundle extends Bundle
+class AppBundle extends Bundle
 {
 }

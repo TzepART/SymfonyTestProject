@@ -1,6 +1,6 @@
 <?php
 
-namespace ChatBundle\Repository;
+namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;

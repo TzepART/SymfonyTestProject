@@ -1,6 +1,6 @@
 <?php
 
-namespace ChatBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -44,9 +44,9 @@ class Comments
     private $dateUpdate;
 
     /**
-     * @var \ChatBundle\Entity\User
+     * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="ChatBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="users_id", referencedColumnName="id")
      * })
@@ -144,10 +144,10 @@ class Comments
     /**
      * Set user
      *
-     * @param \ChatBundle\Entity\User $user
+     * @param \AppBundle\Entity\User $user
      * @return Comments
      */
-    public function setUser(\ChatBundle\Entity\User $user = null)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -157,7 +157,7 @@ class Comments
     /**
      * Get user
      *
-     * @return \ChatBundle\Entity\User
+     * @return \AppBundle\Entity\User
      */
     public function getUser()
     {

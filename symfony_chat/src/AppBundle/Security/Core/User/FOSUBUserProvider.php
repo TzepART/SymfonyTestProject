@@ -6,7 +6,7 @@
  * Time: 0:13
  */
 
-namespace ChatBundle\Security\Core\User;
+namespace AppBundle\Security\Core\User;
 
 
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;

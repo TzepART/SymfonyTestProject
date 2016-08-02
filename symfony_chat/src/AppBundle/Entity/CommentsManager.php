@@ -6,7 +6,7 @@
  * Time: 1:17
  */
 
-namespace ChatBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
 
