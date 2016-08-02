@@ -6,7 +6,7 @@
  * Time: 1:17
  */
 
-namespace Tzepart\ChatBundle\Entity;
+namespace ChatBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
 

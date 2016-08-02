@@ -17,7 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new Tzepart\ChatBundle\TzepartChatBundle(),
+            new ChatBundle\ChatBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

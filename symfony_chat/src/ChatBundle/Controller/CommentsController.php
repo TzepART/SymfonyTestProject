@@ -1,16 +1,15 @@
 <?php
 
-namespace Tzepart\ChatBundle\Controller;
+namespace ChatBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Tzepart\ChatBundle\Entity\Comments;
-use Tzepart\ChatBundle\Entity\CommentsManager;
+use ChatBundle\Entity\Comments;
+use ChatBundle\Entity\CommentsManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
@@ -37,7 +36,7 @@ class CommentsController extends Controller
         }
 
         $em                 = $this->getDoctrine()->getManager();
-        $commentsManagerObj = new CommentsManager($em, 'TzepartChatBundle:Comments');
+        $commentsManagerObj = new CommentsManager($em, 'ChatBundle:Comments');
 
         $arComments = array_reverse($commentsManagerObj->allComments());
 
@@ -58,7 +57,7 @@ class CommentsController extends Controller
     {
         $comment = new Comments();
         $user    = $this->getCurrentUserObject();
-        $form    = $this->createForm('Tzepart\ChatBundle\Form\CommentsType', $comment);
+        $form    = $this->createForm('ChatBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -85,7 +84,7 @@ class CommentsController extends Controller
     public function deleteAction($id)
     {
         $em         = $this->getDoctrine()->getManager();
-        $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($id);
+        $commentObj = $em->getRepository('ChatBundle:Comments')->find($id);
 
         $em->remove($commentObj);
         $em->flush();
@@ -109,7 +108,7 @@ class CommentsController extends Controller
             $commentId  = $request->get("commentId");
             $newText    = $request->get("newText");
             $em         = $this->getDoctrine()->getManager();
-            $commentObj = $em->getRepository('TzepartChatBundle:Comments')->find($commentId);
+            $commentObj = $em->getRepository('ChatBundle:Comments')->find($commentId);
             $commentObj->setText($newText);
             $commentObj->setDateUpdate(new \DateTime('now'));
 

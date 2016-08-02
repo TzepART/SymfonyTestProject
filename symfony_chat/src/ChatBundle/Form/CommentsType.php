@@ -1,6 +1,6 @@
 <?php
 
-namespace Tzepart\ChatBundle\Form;
+namespace ChatBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,7 +29,7 @@ class CommentsType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Tzepart\ChatBundle\Entity\Comments',
+                'data_class' => 'ChatBundle\Entity\Comments',
             )
         );
     }

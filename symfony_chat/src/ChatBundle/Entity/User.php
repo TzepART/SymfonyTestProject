@@ -6,14 +6,14 @@
  * Time: 0:17
  */
 
-namespace Tzepart\ChatBundle\Entity;
+namespace ChatBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="Tzepart\ChatBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="ChatBundle\Repository\UserRepository")
  * @ORM\Table(name="lcl_user")
  */
 class User extends BaseUser

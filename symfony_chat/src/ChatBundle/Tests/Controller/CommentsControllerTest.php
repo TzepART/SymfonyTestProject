@@ -1,6 +1,6 @@
 <?php
 
-namespace Tzepart\ChatBundle\Tests\Controller;
+namespace ChatBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

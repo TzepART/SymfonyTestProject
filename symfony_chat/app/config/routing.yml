@@ -1,5 +1,5 @@
 tzepart_chat:
-    resource: "@TzepartChatBundle/Controller/"
+    resource: "@ChatBundle/Controller/"
     type:     annotation
     prefix:   /
 

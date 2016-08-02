@@ -1,6 +1,6 @@
 <?php
 
-namespace Tzepart\ChatBundle\Repository;
+namespace ChatBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
